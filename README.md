@@ -23,6 +23,10 @@ fbeaulier < a t > ingelibre < d o t > fr
 
 ## This branch only works with Python 2 and is built in Docker.
 
+docker build . -t canfestival
+
+docker-run --name canfestival canfestival
+
 - New example added : examples/thruster_control
 
 ### on RPi
