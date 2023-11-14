@@ -27,6 +27,10 @@ docker build . -t canfestival
 
 docker-run --name canfestival canfestival
 
+### or
+
+work in devcontainer 
+
 - New example added : examples/thruster_control
 
 ### on RPi
