@@ -23,8 +23,10 @@ tags
 /examples/TestMasterMicroMod/TestMaster.c
 /examples/TestMasterMicroMod/TestMasterMicroMod
 /examples/TestMasterSlave/TestMaster.c
+/examples/TestMasterSlave/TestMaster.h
 /examples/TestMasterSlave/TestMasterSlave
 /examples/TestMasterSlave/TestSlave.c
+/examples/TestMasterSlave/TestSlave.h
 /examples/canmctl/canmctl
 /include/config.h
 /objdictgen/canfestival_config.py
