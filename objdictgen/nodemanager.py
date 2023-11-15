@@ -732,7 +732,7 @@ class NodeManager:
                     node.SetParamsEntry(index, subIndex, save = value)
                 elif name == "comment":
                     node.SetParamsEntry(index, subIndex, comment = value)
-		elif name == "buffer_size":
+                elif name == "buffer_size":
                     node.SetParamsEntry(index, subIndex, buffer_size = value)
             else:
                 if editor == "type":
@@ -1039,17 +1039,17 @@ class NodeManager:
                 data.append({"value" : values})
                 data[-1].update(params)
             for i, dic in enumerate(data):
-		if dic["buffer_size"] and dic["buffer_size"].isdigit() is not True:
-		   dic["buffer_size"] = ""
+                if dic["buffer_size"] and dic["buffer_size"].isdigit() is not True:
+                    dic["buffer_size"] = ""
                 infos = node.GetSubentryInfos(index, i)
-		if infos["name"] == "Number of Entries":
-		    dic["buffer_size"] = ""
+                if infos["name"] == "Number of Entries":
+                    dic["buffer_size"] = ""
                 dic["subindex"] = "0x%02X"%i
                 dic["name"] = infos["name"]
                 dic["type"] = node.GetTypeName(infos["type"])
                 if dic["type"] is None:
                     dic["type"] = "Unknown"
-		    dic["buffer_size"] = ""
+                    dic["buffer_size"] = ""
                 dic["access"] = AccessType[infos["access"]]
                 dic["save"] = OptionType[dic["save"]]
                 editor = {"subindex" : None, "name" : None, 
@@ -1090,12 +1090,12 @@ class NodeManager:
                         elif dic["type"] == "BOOLEAN":
                             editor["value"] = "bool"
                             dic["value"] = BoolType[dic["value"]]
-			    dic["buffer_size"] = ""
+                            dic["buffer_size"] = ""
                         result = type_model.match(dic["type"])
                         if result:
                             values = result.groups()
                             if values[0] == "UNSIGNED":
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                                 try:
                                     format = "0x%0" + str(int(values[1])/4) + "X"
                                     dic["value"] = format%dic["value"]
@@ -1104,10 +1104,10 @@ class NodeManager:
                                 editor["value"] = "string"
                             if values[0] == "INTEGER":
                                 editor["value"] = "number"
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                             elif values[0] == "REAL":
                                 editor["value"] = "float"
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                             elif values[0] in ["VISIBLE_STRING", "OCTET_STRING"]:
                                 editor["length"] = values[0]
                         result = range_model.match(dic["type"])
@@ -1116,7 +1116,7 @@ class NodeManager:
                             if values[0] in ["UNSIGNED", "INTEGER", "REAL"]:
                                 editor["min"] = values[2]
                                 editor["max"] = values[3]
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                 editors.append(editor)
             return data, editors
         else:

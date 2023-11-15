@@ -597,7 +597,7 @@ class Node:
             if subIndex == None or type(self.Dictionary[index]) != ListType and subIndex == 0:
                 if comment != None:
                     self.ParamsDictionary[index]["comment"] = comment
-		if buffer_size != None:
+                if buffer_size != None:
                     self.ParamsDictionary[index]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index]["save"] = save
@@ -609,7 +609,7 @@ class Node:
                     self.ParamsDictionary[index][subIndex] = {}
                 if comment != None:
                     self.ParamsDictionary[index][subIndex]["comment"] = comment
-		if buffer_size != None:
+                if buffer_size != None:
                     self.ParamsDictionary[index][subIndex]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index][subIndex]["save"] = save
