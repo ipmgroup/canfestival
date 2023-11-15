@@ -28,5 +28,5 @@ tags
 /examples/canmctl/canmctl
 /include/config.h
 /objdictgen/canfestival_config.py
-/objdictgen/gnosis/
+#/objdictgen/gnosis/
 /__pycache__

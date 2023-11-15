@@ -85,12 +85,12 @@ class NodeList:
     
     def GetSlaveNames(self):
         nodes = self.SlaveNodes.keys()
-        nodes.sort()
+        sorted(nodes)
         return ["0x%2.2X %s"%(idx, self.SlaveNodes[idx]["Name"]) for idx in nodes]
     
     def GetSlaveIDs(self):
         nodes = self.SlaveNodes.keys()
-        nodes.sort()
+        sorted(nodes)
         return nodes
         
     def SetCurrentSelected(self, selected):
@@ -253,13 +253,13 @@ class NodeList:
     
     def GetOrderNumber(self, nodeid):
         nodeindexes = self.SlaveNodes.keys()
-        nodeindexes.sort()
+        sorted(nodeindexes)
         return nodeindexes.index(nodeid) + 1
     
     def GetNodeByOrder(self, order):
         if order > 0:
             nodeindexes = self.SlaveNodes.keys()
-            nodeindexes.sort()
+            sorted(nodeindexes)
             if order <= len(nodeindexes):
                 return self.SlaveNodes[nodeindexes[order - 1]]["Node"]
         return None
@@ -342,13 +342,13 @@ if __name__ == "__main__":
     
     result = nodelist.LoadProject("/home/laurent/test_nodelist")
     if result != None:
-        print result
+        print (result)
     else:
-        print "MasterNode :"
+        print ("MasterNode :")
         manager.CurrentNode.Print()
-        print 
+        print() 
         for nodeid, node in nodelist.SlaveNodes.items():
-            print "SlaveNode name=%s id=0x%2.2X :"%(node["Name"], nodeid)
-            node["Node"].Print()
-            print
+            print ("SlaveNode name=%s id=0x%2.2X :"%(node["Name"], nodeid)
+            node["Node"].Print())
+            print()
 

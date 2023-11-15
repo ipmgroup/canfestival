@@ -164,7 +164,7 @@ class CommunicationDialog(wx.Dialog):
     def SetCurrentList(self, list):
         self.CurrentList = []
         self.CurrentList.extend(list)
-        self.CurrentList.sort()
+        sorted(self.CurrentList)
         
     def GetCurrentList(self):
         return self.CurrentList
@@ -176,7 +176,7 @@ class CommunicationDialog(wx.Dialog):
         for index in self.IndexDictionary.iterkeys():
             if index not in self.CurrentList:
                 self.AllList.append(index)
-        self.AllList.sort()
+        sorted(self.AllList)
         for index in self.AllList:
             self.PossibleIndexes.Append("0x%04X   %s"%(index, self.IndexDictionary[index][0]))
         for index in self.CurrentList:
@@ -203,7 +203,7 @@ class CommunicationDialog(wx.Dialog):
         selected = self.PossibleIndexes.GetSelections()
         for i in selected:
             self.CurrentList.append(self.AllList[i])
-        self.CurrentList.sort()
+        sorted(self.CurrentList)
         self.RefreshLists()
 
     def UnselectCurrent(self):
@@ -211,7 +211,7 @@ class CommunicationDialog(wx.Dialog):
         for i in selected:
             if not self.IndexDictionary[self.CurrentList[i]][1]:
                 self.CurrentList.pop(i)
-        self.CurrentList.sort()
+        sorted(self.CurrentList)
         self.RefreshLists()
 
 
@@ -579,12 +579,12 @@ class UserTypeDialog(wx.Dialog):
 
     def SetTypeList(self, typedic, type = None):
         self.Type.Clear()
-        list = []
+        _list = []
         for index, (name, valuetype) in typedic.iteritems():
             self.TypeDictionary[name] = (index, valuetype)
-            list.append((index, name))
-        list.sort()
-        for index, name in list:
+            _list.append((index, name))
+        sorted(_list)
+        for index, name in _list:
             self.Type.Append(name)
         if type != None:
             self.Type.SetStringSelection(typedic[type][0])
@@ -1010,7 +1010,7 @@ class CreateNodeDialog(wx.Dialog):
         self.Profile.Append(_("None"))
         self.Directory = os.path.join(ScriptDirectory, "config")
         listfiles = os.listdir(self.Directory)
-        listfiles.sort()
+        sorted(listfiles.sort)
         for item in listfiles:
             name, extend = os.path.splitext(item)
             if os.path.isfile(os.path.join(self.Directory, item)) and extend == ".prf" and name != "DS-302":
@@ -1567,7 +1567,7 @@ class DCFEntryValuesDialog(wx.Dialog):
         if values != "":
             data = values[4:]
             current = 0
-            for i in xrange(BE_to_LE(values[:4])):
+            for i in range(BE_to_LE(values[:4])):
                 value = {}
                 value["Index"] = BE_to_LE(data[current:current+2])
                 value["Subindex"] = BE_to_LE(data[current+2:current+3])

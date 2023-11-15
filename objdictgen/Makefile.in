@@ -29,9 +29,9 @@ gnosis: gnosis/version.py
 
 gnosis/version.py:
 	#wget http://gnosis.cx/download/Gnosis_Utils-current.tar.gz
-	mkdir -p gnosis_extract
-	tar xzof Gnosis_Utils-current.tar.gz -C gnosis_extract
-	mv gnosis_extract/Gnosis_Utils-*/gnosis .
+	#mkdir -p gnosis_extract
+	#tar xzof Gnosis_Utils-current.tar.gz -C gnosis_extract
+	#mv gnosis_extract/Gnosis_Utils-*/gnosis .
 	rm -rf gnosis_extract
 
 install: gnosis

@@ -65,7 +65,7 @@ class UndoBuffer:
             self.MinIndex = 0
             self.MaxIndex = 0
         # Initialising buffer with currentstate at the first place
-        for i in xrange(UndoBufferLength):
+        for i in range(UndoBufferLength):
             if i == 0:
                 self.Buffer.append(currentstate)
             else:
@@ -285,7 +285,7 @@ class NodeManager:
             self.SetCurrentFilePath(filepath)
             return index
         except:
-            return _("Unable to load file \"%s\"!")%filepath
+           return ("Unable to load file \"%s\"!")%filepath
 
     """
     Save current node in  a file
@@ -316,10 +316,10 @@ class NodeManager:
                 previousindexes = [idx for idx in self.UndoBuffers.keys() if idx < self.NodeIndex]
                 nextindexes = [idx for idx in self.UndoBuffers.keys() if idx > self.NodeIndex]
                 if len(previousindexes) > 0:
-                    previousindexes.sort()
+                    sorted(previousindexes)
                     self.NodeIndex = previousindexes[-1]
                 elif len(nextindexes) > 0:
-                    nextindexes.sort()
+                    sorted(nextindexes)
                     self.NodeIndex = nextindexes[0]
                 else:
                     self.NodeIndex = None
@@ -378,7 +378,7 @@ class NodeManager:
             default = self.GetTypeDefaultValue(subentry_infos["type"])   
         # First case entry is record
         if infos["struct"] & OD_IdenticalSubindexes: 
-            for i in xrange(1, min(number,subentry_infos["nbmax"]-length) + 1):
+            for i in range(1, min(number,subentry_infos["nbmax"]-length) + 1):
                 node.AddEntry(index, length + i, default)
             if not disable_buffer:
                 self.BufferCurrentNode()
@@ -386,7 +386,7 @@ class NodeManager:
         # Second case entry is array, only possible for manufacturer specific
         elif infos["struct"] & OD_MultipleSubindexes and 0x2000 <= index <= 0x5FFF:
             values = {"name" : "Undefined", "type" : 5, "access" : "rw", "pdo" : True}
-            for i in xrange(1, min(number,0xFE-length) + 1):
+            for i in range(1, min(number,0xFE-length) + 1):
                 node.AddMappingEntry(index, length + i, values = values.copy())
                 node.AddEntry(index, length + i, 0)
             if not disable_buffer:
@@ -408,7 +408,7 @@ class NodeManager:
             nbmin = 1
         # Entry is a record, or is an array of manufacturer specific
         if infos["struct"] & OD_IdenticalSubindexes or 0x2000 <= index <= 0x5FFF and infos["struct"] & OD_IdenticalSubindexes:
-            for i in xrange(min(number, length - nbmin)):
+            for i in range(min(number, length - nbmin)):
                 self.RemoveCurrentVariable(index, length - i)
             self.BufferCurrentNode()
 
@@ -497,7 +497,7 @@ class NodeManager:
                         default = self.GetTypeDefaultValue(subentry_infos["type"])
                     node.AddEntry(index, value = [])
                     if "nbmin" in subentry_infos:
-                        for i in xrange(subentry_infos["nbmin"]):
+                        for i in range(subentry_infos["nbmin"]):
                             node.AddEntry(index, i + 1, default)
                     else:
                         node.AddEntry(index, 1, default)
@@ -581,7 +581,7 @@ class NodeManager:
             for menu,list in self.CurrentNode.GetSpecificMenu():
                 for i in list:
                     iinfos = self.GetEntryInfos(i)
-                    indexes = [i + incr * iinfos["incr"] for incr in xrange(iinfos["nbmax"])] 
+                    indexes = [i + incr * iinfos["incr"] for incr in range(iinfos["nbmax"])] 
                     if index in indexes:
                         found = True
                         diff = index - i
@@ -613,10 +613,10 @@ class NodeManager:
                     if struct == rec:
                         values = {"name" : name + " %d[(sub)]", "type" : 0x05, "access" : "rw", "pdo" : True, "nbmax" : 0xFE}
                         node.AddMappingEntry(index, 1, values = values)
-                        for i in xrange(number):
+                        for i in range(number):
                             node.AddEntry(index, i + 1, 0)
                     else:
-                        for i in xrange(number):
+                        for i in range(number):
                             values = {"name" : "Undefined", "type" : 0x05, "access" : "rw", "pdo" : True}
                             node.AddMappingEntry(index, i + 1, values = values)
                             node.AddEntry(index, i + 1, 0)
@@ -841,7 +841,7 @@ class NodeManager:
     
     def GetAllFilenames(self):
         indexes = self.UndoBuffers.keys()
-        indexes.sort()
+        sorted(indexes)
         return [self.GetFilename(idx) for idx in indexes]
     
     def GetFilename(self, index):
@@ -1005,12 +1005,12 @@ class NodeManager:
                 good &= min <= index <= max
             if good:
                 validchoices.append((menu, None))
-        list = [index for index in MappingDictionary.keys() if index >= 0x1000]
+        _list = [index for index in MappingDictionary.keys() if index >= 0x1000]
         profiles = self.CurrentNode.GetMappings(False)
         for profile in profiles:
-            list.extend(profile.keys())
-        list.sort()
-        for index in list:
+            _list.extend(profile.keys())
+        sorted(_list)
+        for index in _list:
             if min <= index <= max and not self.CurrentNode.IsEntry(index) and index not in exclusionlist:
                 validchoices.append((self.GetEntryName(index), index))
         return validchoices
@@ -1031,7 +1031,7 @@ class NodeManager:
             editors = []
             values = node.GetEntry(index, compute = False)
             params = node.GetParamsEntry(index)
-            if isinstance(values, ListType):
+            if isinstance(values, list):
                 for i, value in enumerate(values):
                     data.append({"value" : value})
                     data[-1].update(params[i])      
@@ -1056,7 +1056,7 @@ class NodeManager:
                           "type" : None, "value" : None,
                           "access" : None, "save" : "option", 
                           "callback" : "option", "comment" : "string", "buffer_size" : "string"}
-                if isinstance(values, ListType) and i == 0:
+                if isinstance(values, list) and i == 0:
                     if 0x1600 <= index <= 0x17FF or 0x1A00 <= index <= 0x1C00:
                         editor["access"] = "raccess"
                 else:

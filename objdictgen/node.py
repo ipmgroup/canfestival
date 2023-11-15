@@ -21,7 +21,7 @@
 #License along with this library; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import cPickle
+import pickle
 from types import *
 import re
 
@@ -348,7 +348,7 @@ def FindMapVariableList(mappingdictionary, Node, compute=True):
                     name = mappingdictionary[index]["values"][subIndex]["name"]
                     if mappingdictionary[index]["struct"] & OD_IdenticalSubindexes:
                         values = Node.GetEntry(index)
-                        for i in xrange(len(values) - 1):
+                        for i in range(len(values) - 1):
                             computed_name = name
                             if compute:
                                 computed_name = StringFormat(computed_name, 1, i + 1)
@@ -379,7 +379,7 @@ def FindIndex(index, mappingdictionary):
         return index
     else:
         listpluri = [idx for idx in mappingdictionary.keys() if mappingdictionary[idx]["struct"] & OD_IdenticalIndexes]
-        listpluri.sort()
+        sorted(listpluri)
         for idx in listpluri:
             nb_max = mappingdictionary[idx]["nbmax"]
             incr = mappingdictionary[idx]["incr"]
@@ -568,7 +568,7 @@ class Node:
             elif subIndex == 1:
                 self.Dictionary[index] = [value]
                 return True
-        elif subIndex > 0 and type(self.Dictionary[index]) == ListType and subIndex == len(self.Dictionary[index]) + 1:
+        elif subIndex > 0 and type(self.Dictionary[index]) == list and subIndex == len(self.Dictionary[index]) + 1:
             self.Dictionary[index].append(value)
             return True
         return False
@@ -582,7 +582,7 @@ class Node:
                 if value != None:
                     self.Dictionary[index] = value
                 return True
-            elif type(self.Dictionary[index]) == ListType and 0 < subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 < subIndex <= len(self.Dictionary[index]):
                 if value != None:
                     self.Dictionary[index][subIndex - 1] = value
                 return True
@@ -594,7 +594,7 @@ class Node:
         if index in self.Dictionary:
             if (comment != None or save != None or callback != None or buffer_size != None) and index not in self.ParamsDictionary:
                 self.ParamsDictionary[index] = {}
-            if subIndex == None or type(self.Dictionary[index]) != ListType and subIndex == 0:
+            if subIndex == None or type(self.Dictionary[index]) != list and subIndex == 0:
                 if comment != None:
                     self.ParamsDictionary[index]["comment"] = comment
                 if buffer_size != None:
@@ -604,7 +604,7 @@ class Node:
                 if callback != None:
                     self.ParamsDictionary[index]["callback"] = callback
                 return True
-            elif type(self.Dictionary[index]) == ListType and 0 <= subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 <= subIndex <= len(self.Dictionary[index]):
                 if (comment != None or save != None or callback != None or buffer_size != None) and subIndex not in self.ParamsDictionary[index]:
                     self.ParamsDictionary[index][subIndex] = {}
                 if comment != None:
@@ -630,7 +630,7 @@ class Node:
                 if index in self.ParamsDictionary:
                     self.ParamsDictionary.pop(index)
                 return True
-            elif type(self.Dictionary[index]) == ListType and subIndex == len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and subIndex == len(self.Dictionary[index]):
                 self.Dictionary[index].pop(subIndex - 1)
                 if index in self.ParamsDictionary:
                     if subIndex in self.ParamsDictionary[index]:
@@ -661,7 +661,7 @@ class Node:
     def GetEntry(self, index, subIndex = None, compute = True):
         if index in self.Dictionary:
             if subIndex == None:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     values = [len(self.Dictionary[index])]
                     for value in self.Dictionary[index]:
                         values.append(self.CompileValue(value, index, compute))
@@ -669,11 +669,11 @@ class Node:
                 else:
                     return self.CompileValue(self.Dictionary[index], index, compute)
             elif subIndex == 0:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     return len(self.Dictionary[index])
                 else:
                     return self.CompileValue(self.Dictionary[index], index, compute)
-            elif type(self.Dictionary[index]) == ListType and 0 < subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 < subIndex <= len(self.Dictionary[index]):
                 return self.CompileValue(self.Dictionary[index][subIndex - 1], index, compute)
         return None
 
@@ -686,28 +686,28 @@ class Node:
             self.ParamsDictionary = {}
         if index in self.Dictionary:
             if subIndex == None:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     if index in self.ParamsDictionary:
                         result = []
-                        for i in xrange(len(self.Dictionary[index]) + 1):
+                        for i in range(len(self.Dictionary[index]) + 1):
                             line = DefaultParams.copy()
                             if i in self.ParamsDictionary[index]:
                                 line.update(self.ParamsDictionary[index][i])
                             result.append(line)
                         return result
                     else:
-                        return [DefaultParams.copy() for i in xrange(len(self.Dictionary[index]) + 1)]
+                        return [DefaultParams.copy() for i in range(len(self.Dictionary[index]) + 1)]
                 else:
                     result = DefaultParams.copy()
                     if index in self.ParamsDictionary:
                         result.update(self.ParamsDictionary[index])
                     return result
-            elif subIndex == 0 and type(self.Dictionary[index]) != ListType:
+            elif subIndex == 0 and type(self.Dictionary[index]) != list:
                 result = DefaultParams.copy()
                 if index in self.ParamsDictionary:
                     result.update(self.ParamsDictionary[index])
                 return result
-            elif type(self.Dictionary[index]) == ListType and 0 <= subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 <= subIndex <= len(self.Dictionary[index]):
                 result = DefaultParams.copy()
                 if index in self.ParamsDictionary and subIndex in self.ParamsDictionary[index]:
                     result.update(self.ParamsDictionary[index][subIndex])
@@ -784,23 +784,23 @@ class Node:
                     if self.UserMapping[index]["struct"] & OD_IdenticalSubindexes:
                         if self.IsStringType(self.UserMapping[index]["values"][subIndex]["type"]):
                             if self.IsRealType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0.)
                             elif not self.IsStringType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0)
                         elif self.IsRealType(self.UserMapping[index]["values"][subIndex]["type"]):
                             if self.IsStringType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, "")
                             elif not self.IsRealType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0)
                         elif self.IsStringType(values["type"]):
-                            for i in xrange(len(self.Dictionary[index])):
+                            for i in range(len(self.Dictionary[index])):
                                 self.SetEntry(index, i + 1, "")
                         elif self.IsRealType(values["type"]):
-                            for i in xrange(len(self.Dictionary[index])):
+                            for i in range(len(self.Dictionary[index])):
                                 self.SetEntry(index, i + 1, 0.)                        
                     else:
                         if self.IsStringType(self.UserMapping[index]["values"][subIndex]["type"]):
@@ -880,30 +880,30 @@ class Node:
     Return a copy of the node
     """
     def Copy(self):
-        return cPickle.loads(cPickle.dumps(self))
+        return pickle.loads(pickle.dumps(self))
 
     """
     Return a sorted list of indexes in Object Dictionary
     """
     def GetIndexes(self):
         listindex = self.Dictionary.keys()
-        listindex.sort()
+        sorted(listindex)
         return listindex
 
     """
     Print the Dictionary values
     """
     def Print(self):
-        print self.PrintString()
+        print(self.PrintString())
     
     def PrintString(self):
         result = ""
         listindex = self.Dictionary.keys()
-        listindex.sort()
+        sorted(listindex)
         for index in listindex:
             name = self.GetEntryName(index)
             values = self.Dictionary[index]
-            if isinstance(values, ListType):
+            if isinstance(values, list):
                 result += "%04X (%s):\n"%(index, name)
                 for subidx, value in enumerate(values):
                     subentry_infos = self.GetSubentryInfos(index, subidx + 1)
@@ -932,7 +932,7 @@ class Node:
         return result
             
     def CompileValue(self, value, index, compute = True):
-        if isinstance(value, (StringType, UnicodeType)) and value.upper().find("$NODEID") != -1:
+        if isinstance(value, (str)) and value.upper().find("$NODEID") != -1:
             base = self.GetBaseIndex(index)
             try:
                 raw = eval(value)
@@ -1040,17 +1040,17 @@ class Node:
         return result
     
     def GetMapVariableList(self, compute=True):
-        list = FindMapVariableList(MappingDictionary, self, compute)
+        _list = FindMapVariableList(MappingDictionary, self, compute)
         for mapping in self.GetMappings():
-            list.extend(FindMapVariableList(mapping, self, compute))
-        list.sort()
-        return list
+            _list.extend(FindMapVariableList(mapping, self, compute))
+        sorted(_list)
+        return _list
     
     def GetMandatoryIndexes(self, node = None):
-        list = FindMandatoryIndexes(MappingDictionary)
+        _list = FindMandatoryIndexes(MappingDictionary)
         for mapping in self.GetMappings():
-            list.extend(FindMandatoryIndexes(mapping))
-        return list
+            _list.extend(FindMandatoryIndexes(mapping))
+        return _list
     
     def GetCustomisableTypes(self):
         dic = {}
@@ -1086,11 +1086,11 @@ class Node:
 #-------------------------------------------------------------------------------
     
     def GetTypeList(self):
-        list = FindTypeList(MappingDictionary)
+        _list = FindTypeList(MappingDictionary)
         for mapping in self.GetMappings():
-            list.extend(FindTypeList(mapping))
-        list.sort()
-        return ",".join(list)
+            _list.extend(FindTypeList(mapping))
+        sorted(_list)
+        return ",".join(_list)
 
     def GenerateMapName(self, name, index, subindex):
         return "%s (0x%4.4X)" % (name, index)
@@ -1157,7 +1157,7 @@ def LE_to_BE(value, size):
     """
     
     data = ("%" + str(size * 2) + "." + str(size * 2) + "X") % value
-    list_car = [data[i:i+2] for i in xrange(0, len(data), 2)]
+    list_car = [data[i:i+2] for i in range(0, len(data), 2)]
     list_car.reverse()
     return "".join([chr(int(car, 16)) for car in list_car])
 

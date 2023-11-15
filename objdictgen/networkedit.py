@@ -541,13 +541,13 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
                 find_index = True
                 index, subIndex = result
                 result = OpenPDFDocIndex(index, ScriptDirectory)
-                if isinstance(result, (StringType, UnicodeType)):
+                if isinstance(result, (str)):
                     message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
                     message.ShowModal()
                     message.Destroy()
         if not find_index:
             result = OpenPDFDocIndex(None, ScriptDirectory)
-            if isinstance(result, (StringType, UnicodeType)):
+            if isinstance(result, (str)):
                 message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()
@@ -669,7 +669,7 @@ def AddExceptHook(path, app_version='[No version]'):#, ignored_exceptions=[]):
                 
                 output = open(path+os.sep+"bug_report_"+info['date'].replace(':','-').replace(' ','_')+".txt",'w')
                 lst = info.keys()
-                lst.sort()
+                sorted(lst)
                 for a in lst:
                     output.write(a+":\n"+str(info[a])+"\n\n")
 

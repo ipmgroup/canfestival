@@ -343,7 +343,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
         if self.ModeSolo:
             for filepath in filesOpen:
                 result = self.Manager.OpenFileInCurrent(os.path.abspath(filepath))
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, (int)):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -448,7 +448,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             answer = dialog.ShowModal()
             dialog.Destroy()
             if answer == wx.ID_YES:
-                for i in xrange(self.Manager.GetBufferNumber()):
+                for i in range(self.Manager.GetBufferNumber()):
                     if self.Manager.CurrentIsSaved():
                         self.Manager.CloseCurrent()
                     else:
@@ -542,7 +542,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             NMT = dialog.GetNMTManagement()
             options = dialog.GetOptions()
             result = self.Manager.CreateNewNode(name, id, nodetype, description, profile, filepath, NMT, options)
-            if isinstance(result, (IntType, LongType)):
+            if isinstance(result, (int)):
                 new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                 new_editingpanel.SetIndex(result)
                 self.FileOpened.AddPage(new_editingpanel, "")
@@ -570,7 +570,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             filepath = dialog.GetPath()
             if os.path.isfile(filepath):
                 result = self.Manager.OpenFileInCurrent(filepath)
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, (int)):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -665,7 +665,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             filepath = dialog.GetPath()
             if os.path.isfile(filepath):
                 result = self.Manager.ImportCurrentFromEDSFile(filepath)
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, (int)):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -829,7 +829,7 @@ def AddExceptHook(path, app_version='[No version]'):#, ignored_exceptions=[]):
                 
                 output = open(path+os.sep+"bug_report_"+info['date'].replace(':','-').replace(' ','_')+".txt",'w')
                 lst = info.keys()
-                lst.sort()
+                sorted(lst)
                 for a in lst:
                     output.write(a+":\n"+str(info[a])+"\n\n")
 
