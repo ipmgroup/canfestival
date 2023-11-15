@@ -14,3 +14,7 @@ work in devcontainer
 
 ### on RPi
 ./configure --can=socket
+
+### test branch with python 3
+ the project is "build" and the engines are spinning. A full functionality check was not given.
+ Use at your own risk. :)
