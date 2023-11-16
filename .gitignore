@@ -29,4 +29,5 @@ tags
 /include/config.h
 /objdictgen/canfestival_config.py
 /objdictgen/gnosis/
+/examples/thruster_control/tctl
 /__pycache__
