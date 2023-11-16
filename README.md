@@ -10,7 +10,7 @@ docker-run --name canfestival canfestival
 
 work in devcontainer 
 
-- New example added : examples/thruster_control
+- New example added : [examples/thruster_control](https://github.com/ipmgroup/canfestival/tree/master/examples/thruster_control#readme)
 
 ### on RPi
 ./configure --can=socket
